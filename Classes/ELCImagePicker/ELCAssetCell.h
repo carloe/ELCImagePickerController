@@ -13,6 +13,7 @@
 @property (nonatomic, assign) BOOL alignmentLeft;
 @property (nonatomic, assign) CGFloat itemPadding;
 @property (nonatomic, assign) NSInteger numberOfColumns;
+@property (nonatomic, retain) UIImage *selectionIcon;
 
 - (void)setAssets:(NSArray *)assets;
 

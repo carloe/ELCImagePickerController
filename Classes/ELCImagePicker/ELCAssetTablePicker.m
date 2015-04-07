@@ -11,19 +11,31 @@
 #import "ELCAlbumPickerController.h"
 #import "ELCConsole.h"
 
+#define kELCImagePickerDefaultIconWidth 28.0f
+#define kELCImagePickerDefaultBorderWith 0.65f
+
 static NSInteger const kELCAssetTablePickerColumns = 4;
-static CGFloat const kELCAssetCellPadding = 4.0f;
+static CGFloat const kELCAssetCellPadding = 2.0f;
 static CGFloat const kELCAssetDefaultItemWidth = 80.0f;
 
 @interface ELCAssetTablePicker ()
 
 @property (nonatomic, assign) int columns;
+@property(readonly) UIImage *defaultSelectionIcon;
 
 @end
 
 @implementation ELCAssetTablePicker
 
 //Using auto synthesizers
+
+- (instancetype)init {
+    self = [super init];
+    if(self) {
+        self.selectionIcon = self.defaultOverlayImage;
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -258,6 +270,7 @@ static CGFloat const kELCAssetDefaultItemWidth = 80.0f;
     }
     cell.itemPadding = kELCAssetCellPadding;
     cell.numberOfColumns = self.columns;
+    cell.selectionIcon = self.selectionIcon;
     
     [cell setAssets:[self assetsForIndexPath:indexPath]];
     
@@ -283,5 +296,93 @@ static CGFloat const kELCAssetDefaultItemWidth = 80.0f;
     return count;
 }
 
+#pragma mark Lazy Getter
+
+// Draws an iOS 7 style checkbubble
+- (UIImage *)defaultOverlayImage {
+    static UIImage *defaultSelectionIcon;
+    if(!defaultSelectionIcon) {
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(kELCImagePickerDefaultIconWidth, kELCImagePickerDefaultIconWidth), NO, 0.0f);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        
+        // Color Declarations
+        UIColor* backgroundColor = [UIColor colorWithRed:0.078 green:0.43 blue:0.87 alpha:1];
+        UIColor* foregroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
+        
+        // Shadow Declarations
+        UIColor* dropShadowColor = [UIColor.blackColor colorWithAlphaComponent:0.2];
+        CGSize dropShadowOffset = CGSizeMake(0.1, 1.1);
+        CGFloat dropShadowBlurRadius = 1;
+        
+        // Glow Declarations
+        UIColor* glowColor = [UIColor.blackColor colorWithAlphaComponent:0.5];
+        CGSize glowOffset = CGSizeMake(0.1, 0.1);
+        CGFloat glowBlurRadius = 3;
+        
+        // Calculate scale factor & offset
+        CGFloat drawScale = 1.0 / 18.0 * kELCImagePickerDefaultIconWidth;
+        CGFloat offset = round(kELCImagePickerDefaultIconWidth / 2.0);
+        
+        UIBezierPath* baseOvalPath = [UIBezierPath bezierPathWithOvalInRect: CGRectMake(-7, -7, 14, 14)];
+        baseOvalPath.lineWidth = kELCImagePickerDefaultBorderWith;
+        
+        // Begin Drawing
+        CGContextSaveGState(context);
+        CGContextTranslateCTM(context, offset, offset);
+        CGContextScaleCTM(context, drawScale, drawScale);
+
+        // Draw background glow
+        CGContextSetShadowWithColor(context, glowOffset, glowBlurRadius, [glowColor CGColor]);
+        CGContextBeginTransparencyLayer(context, NULL);
+        [dropShadowColor setFill];
+        [baseOvalPath fill];
+        [dropShadowColor setStroke];
+        [baseOvalPath stroke];
+        CGContextEndTransparencyLayer(context);
+
+        // Draw icon with dropshadow
+        CGContextSetShadowWithColor(context, dropShadowOffset, dropShadowBlurRadius, [dropShadowColor CGColor]);
+        CGContextBeginTransparencyLayer(context, NULL);
+        // Draw the round base
+        [backgroundColor setFill];
+        [baseOvalPath fill];
+        [foregroundColor setStroke];
+        [baseOvalPath stroke];
+        
+        // Draw the right line of the checkmark
+        UIBezierPath* checkRightPath = UIBezierPath.bezierPath;
+        [checkRightPath moveToPoint: CGPointMake(3.5, -2.5)];
+        [checkRightPath addLineToPoint: CGPointMake(-1.5, 2.5)];
+        [checkRightPath addLineToPoint: CGPointMake(3.5, -2.5)];
+        [checkRightPath closePath];
+        checkRightPath.miterLimit = 4;
+        checkRightPath.lineCapStyle = kCGLineCapSquare;
+        checkRightPath.lineJoinStyle = kCGLineJoinMiter;
+        checkRightPath.usesEvenOddFillRule = YES;
+        [foregroundColor setStroke];
+        checkRightPath.lineWidth = kELCImagePickerDefaultBorderWith;
+        [checkRightPath stroke];
+        
+        // Draw the left line of the checkmark
+        UIBezierPath* checkLeftPath = UIBezierPath.bezierPath;
+        [checkLeftPath moveToPoint: CGPointMake(-1.5, 2.5)];
+        [checkLeftPath addLineToPoint: CGPointMake(-3.5, 0.5)];
+        [checkLeftPath addLineToPoint: CGPointMake(-1.5, 2.5)];
+        [checkLeftPath closePath];
+        checkLeftPath.miterLimit = 4;
+        checkLeftPath.lineCapStyle = kCGLineCapSquare;
+        checkLeftPath.lineJoinStyle = kCGLineJoinMiter;
+        checkLeftPath.usesEvenOddFillRule = YES;
+        [foregroundColor setStroke];
+        checkLeftPath.lineWidth = kELCImagePickerDefaultBorderWith;
+        [checkLeftPath stroke];
+        CGContextEndTransparencyLayer(context);
+        CGContextRestoreGState(context);
+        
+        defaultSelectionIcon = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    }
+    return defaultSelectionIcon;
+}
 
 @end

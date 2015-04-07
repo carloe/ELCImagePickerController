@@ -10,8 +10,8 @@
 
 @interface ELCOverlayImageView : UIImageView
 
-@property (nonatomic, strong) UILabel *labIndex;
-
-- (void)setIndex:(int)_index;
+@property(nonatomic) UIImage *selectionIcon;
+@property(nonatomic, assign) NSInteger index;
+@property(nonatomic, assign) UIEdgeInsets contentInsets;
 
 @end

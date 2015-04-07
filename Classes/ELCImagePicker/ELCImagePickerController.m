@@ -15,6 +15,7 @@
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "ELCConsole.h"
 
+
 @implementation ELCImagePickerController
 
 //Using auto synthesizers
@@ -36,7 +37,6 @@
 
 - (id)initWithRootViewController:(UIViewController *)rootViewController
 {
-
     self = [super initWithRootViewController:rootViewController];
     if (self) {
         self.maximumImagesCount = 4;
@@ -44,6 +44,12 @@
     }
     return self;
 }
+
+- (void)setSelectionImage:(UIImage *)selectionImage {
+    NSLog(@"%@", self.albumPicker);
+}
+
+
 
 - (ELCAlbumPickerController *)albumPicker
 {

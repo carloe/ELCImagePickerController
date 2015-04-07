@@ -55,9 +55,7 @@
         [view removeFromSuperview];
 	}
     //set up a pointer here so we don't keep calling [UIImage imageNamed:] if creating overlays
-    UIImage *overlayImage = nil;
     for (int i = 0; i < [_rowAssets count]; ++i) {
-
         ELCAsset *asset = [_rowAssets objectAtIndex:i];
 
         if (i < [_imageViewArray count]) {
@@ -71,16 +69,27 @@
         if (i < [_overlayViewArray count]) {
             ELCOverlayImageView *overlayView = [_overlayViewArray objectAtIndex:i];
             overlayView.hidden = asset.selected ? NO : YES;
-            overlayView.labIndex.text = [NSString stringWithFormat:@"%d", asset.index + 1];
+            if ([[ELCConsole mainConsole] onOrder])
+                overlayView.index = asset.index + 1;
+            else
+                overlayView.index = 0;
+                
         } else {
-            if (overlayImage == nil) {
-                overlayImage = [UIImage imageNamed:@"Overlay.png"];
-            }
-            ELCOverlayImageView *overlayView = [[ELCOverlayImageView alloc] initWithImage:overlayImage];
+            ELCOverlayImageView *overlayView = [[ELCOverlayImageView alloc] initWithImage:self.selectionIcon];
             [_overlayViewArray addObject:overlayView];
             overlayView.hidden = asset.selected ? NO : YES;
-            overlayView.labIndex.text = [NSString stringWithFormat:@"%d", asset.index + 1];
+            if ([[ELCConsole mainConsole] onOrder])
+                overlayView.index = asset.index + 1;
+            else
+                overlayView.index = 0;
         }
+    }
+}
+
+-(void)setSelectionIcon:(UIImage *)selectionIcon {
+    _selectionIcon = selectionIcon;
+    for(ELCOverlayImageView *overlayView in _overlayViewArray) {
+        [overlayView setSelectionIcon:_selectionIcon];
     }
 }
 
