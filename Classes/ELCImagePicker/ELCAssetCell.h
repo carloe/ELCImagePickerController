@@ -14,6 +14,7 @@
 @property (nonatomic, assign) CGFloat itemPadding;
 @property (nonatomic, assign) NSInteger numberOfColumns;
 @property (nonatomic, retain) UIImage *selectionIcon;
+@property (nonatomic, assign) BOOL showSelectionCounter;
 
 - (void)setAssets:(NSArray *)assets;
 

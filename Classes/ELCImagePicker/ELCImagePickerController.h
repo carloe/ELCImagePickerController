@@ -36,6 +36,7 @@
 @property (nonatomic, assign) NSInteger maximumImagesCount;
 @property (nonatomic, assign) BOOL onOrder;
 @property (nonatomic, strong) UIImage *selectionImage;
+@property (nonatomic, assign) BOOL showSelectionCounter;
 /**
  * An array indicating the media types to be accessed by the media picker controller.
  * Same usage as for UIImagePickerController.

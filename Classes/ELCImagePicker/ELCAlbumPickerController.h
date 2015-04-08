@@ -15,7 +15,8 @@
 @property (nonatomic, weak) id<ELCAssetSelectionDelegate> parent;
 @property (nonatomic, strong) NSMutableArray *assetGroups;
 @property (nonatomic, strong) NSArray *mediaTypes;
-@property (nonatomic, strong) UIImage *selectionOverlay;
+@property (nonatomic, strong) UIImage *selectionIcon;
+@property (nonatomic, assign) BOOL showSelectionCounter;
 
 // optional, can be used to filter the assets displayed
 @property (nonatomic, weak) id<ELCAssetPickerFilterDelegate> assetPickerFilterDelegate;

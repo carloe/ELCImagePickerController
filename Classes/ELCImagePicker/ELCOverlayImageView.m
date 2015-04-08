@@ -60,6 +60,14 @@ static CGSize const labelPadding = { 3.0f, 1.0f };
     return self.iconView.image;
 }
 
+- (void)setShowSelectionCounter:(BOOL)showSelectionCounter {
+    self.indexLabel.hidden = !showSelectionCounter;
+}
+
+- (BOOL)showSelectionCounter {
+    return !self.indexLabel.hidden;
+}
+
 
 - (void)commonInit {
     self.contentInsets = UIEdgeInsetsMake(kELCOverlayImageViewDefaultInset, kELCOverlayImageViewDefaultInset , kELCOverlayImageViewDefaultInset, kELCOverlayImageViewDefaultInset);
@@ -87,7 +95,7 @@ static CGSize const labelPadding = { 3.0f, 1.0f };
 - (void)setIndex:(NSInteger)index
 {
     _index = index;
-    if(index>0) {
+    if(index>0 && self.showSelectionCounter) {
         self.indexLabel.text = [NSString stringWithFormat:@"%ld",(long)index];
         self.indexLabel.hidden = NO;
     }

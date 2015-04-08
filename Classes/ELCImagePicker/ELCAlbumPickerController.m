@@ -204,6 +204,9 @@
 
     picker.assetGroup = [self.assetGroups objectAtIndex:indexPath.row];
     [picker.assetGroup setAssetsFilter:[self assetFilter]];
+    if(self.selectionIcon)
+        picker.selectionIcon = self.selectionIcon;
+    picker.showSelectionCounter = self.showSelectionCounter;
     
 	picker.assetPickerFilterDelegate = self.assetPickerFilterDelegate;
 	

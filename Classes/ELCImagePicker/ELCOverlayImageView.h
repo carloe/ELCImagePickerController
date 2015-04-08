@@ -13,5 +13,5 @@
 @property(nonatomic) UIImage *selectionIcon;
 @property(nonatomic, assign) NSInteger index;
 @property(nonatomic, assign) UIEdgeInsets contentInsets;
-
+@property(nonatomic, assign) BOOL showSelectionCounter;
 @end

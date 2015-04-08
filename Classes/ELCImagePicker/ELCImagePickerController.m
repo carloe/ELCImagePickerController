@@ -29,6 +29,7 @@
         self.maximumImagesCount = 4;
         self.returnsImage = YES;
         self.returnsOriginalImage = YES;
+        self.showSelectionCounter = YES;
         [albumPicker setParent:self];
         self.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
     }
@@ -71,6 +72,14 @@
 	if ([_imagePickerDelegate respondsToSelector:@selector(elcImagePickerControllerDidCancel:)]) {
 		[_imagePickerDelegate performSelector:@selector(elcImagePickerControllerDidCancel:) withObject:self];
 	}
+}
+
+- (void)setShowSelectionCounter:(BOOL)showSelectionCounter {
+    self.albumPicker.showSelectionCounter = showSelectionCounter;
+}
+
+- (BOOL)showSelectionCounter {
+    return self.albumPicker.showSelectionCounter;
 }
 
 - (BOOL)shouldSelectAsset:(ELCAsset *)asset previousCount:(NSUInteger)previousCount
