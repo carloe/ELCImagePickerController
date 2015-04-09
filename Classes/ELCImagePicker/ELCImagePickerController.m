@@ -32,6 +32,8 @@
         self.showSelectionCounter = YES;
         [albumPicker setParent:self];
         self.mediaTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
+        self.selectionErrorTitle = NSLocalizedString(@"Only %d photos please!", nil);
+        self.selectionErrorBody = NSLocalizedString(@"You can only send %d photos at a time.", nil);
     }
     return self;
 }
@@ -86,8 +88,8 @@
 {
     BOOL shouldSelect = previousCount < self.maximumImagesCount;
     if (!shouldSelect) {
-        NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Only %d photos please!", nil), self.maximumImagesCount];
-        NSString *message = [NSString stringWithFormat:NSLocalizedString(@"You can only send %d photos at a time.", nil), self.maximumImagesCount];
+        NSString *title = [NSString stringWithFormat:self.selectionErrorTitle, self.maximumImagesCount];
+        NSString *message = [NSString stringWithFormat:self.selectionErrorBody, self.maximumImagesCount];
         [[[UIAlertView alloc] initWithTitle:title
                                     message:message
                                    delegate:nil

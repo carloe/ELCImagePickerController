@@ -37,6 +37,9 @@
 @property (nonatomic, assign) BOOL onOrder;
 @property (nonatomic, strong) UIImage *selectionImage;
 @property (nonatomic, assign) BOOL showSelectionCounter;
+@property (nonatomic, strong) NSString *selectionErrorTitle;
+@property (nonatomic, strong) NSString *selectionErrorBody;
+
 /**
  * An array indicating the media types to be accessed by the media picker controller.
  * Same usage as for UIImagePickerController.
