@@ -135,7 +135,7 @@
             
                 if (_returnsOriginalImage) {
                     imgRef = [assetRep fullResolutionImage];
-                    orientation = [assetRep orientation];
+                    orientation = (UIImageOrientation)[assetRep orientation];
                 } else {
                     imgRef = [assetRep fullScreenImage];
                 }
